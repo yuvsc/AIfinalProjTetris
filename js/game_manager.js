@@ -1,19 +1,22 @@
-function GameManager(i, a, b, c, d){//number, height, line, holes, bumpiness
+function GameManager(i, a, b, c, d,pieces_list){//number, height, line, holes, bumpiness, bag of pieces 
     this.gridCanvas = document.getElementById('grid-canvas'+i);
     this.nextCanvas = document.getElementById('next-canvas'+i);
     this.scoreContainer = document.getElementById("score-container"+i);
     this.resetButton = document.getElementById('reset-button');
     this.aiButton = document.getElementById('ai-button');
 	
+	this.finalScore = 0;
+	this.i = i;
+	
+	this.isRunning = true;
+	
+	this.bag = pieces_list;
+	
+	// display the numbers of a,b,c,d in the next-number box
 	this.randomNumbers=document.getElementById('next-number'+i);
 	var allofthem = 'a = '+a.toFixed(4) +'\nb = '+b.toFixed(4)+'\n c = '+c.toFixed(4)+'\n d = '+d.toFixed(4);
 	this.randomNumbers.innerHTML = allofthem;
 	
-	/*this.a = a;
-	this.b = b;
-	this.c = c;
-	this.d = d;*/
-
     this.gravityUpdater = new Updater();
     this.gravityUpdater.skipping = this.aiActive;
     this.gravityUpdater.onUpdate(function(){
@@ -63,7 +66,7 @@ function GameManager(i, a, b, c, d){//number, height, line, holes, bumpiness
 
 GameManager.prototype.setup = function(a,b,c,d){
     this.grid = new Grid(22, 10);
-    this.rpg = new RandomPieceGenerator(2);
+    this.rpg = new RandomPieceGenerator(this.bag);
     this.ai = new AI(a,b,c,d)//height, line, holes, bumpiness(0.510066, 0.760666, 0.35663, 0.184483);
     this.workingPieces = [this.rpg.nextPiece(), this.rpg.nextPiece()];
     this.workingPiece = this.workingPieces[0];
@@ -132,7 +135,7 @@ GameManager.prototype.stopAI = function(){
 GameManager.prototype.setWorkingPiece = function(){
     this.grid.addPiece(this.workingPiece);
     this.score += this.grid.clearLines();
-    if (!this.grid.exceeded()){
+    if (!this.grid.exceeded() && this.rpg.index +1 <this.bag.length){
         for(var i = 0; i < this.workingPieces.length - 1; i++){
             this.workingPieces[i] = this.workingPieces[i + 1];
         }
@@ -143,7 +146,11 @@ GameManager.prototype.setWorkingPiece = function(){
             this.gravityUpdater.skipping = true;
         }
     }else{
+		finalScore = this.score;
+		console.log("final score for "+this.i+" is "+finalScore);
+		this.isRunning = false;
         alert("Game Over!");
+		throw new Error("game is over");
     }
 };
 
