@@ -1,9 +1,18 @@
-function GameManager(i){
+function GameManager(i, a, b, c, d){//number, height, line, holes, bumpiness
     this.gridCanvas = document.getElementById('grid-canvas'+i);
     this.nextCanvas = document.getElementById('next-canvas'+i);
     this.scoreContainer = document.getElementById("score-container"+i);
     this.resetButton = document.getElementById('reset-button');
     this.aiButton = document.getElementById('ai-button');
+	
+	this.randomNumbers=document.getElementById('next-number'+i);
+	var allofthem = 'a = '+a.toFixed(4) +'\nb = '+b.toFixed(4)+'\n c = '+c.toFixed(4)+'\n d = '+d.toFixed(4);
+	this.randomNumbers.innerHTML = allofthem;
+	
+	/*this.a = a;
+	this.b = b;
+	this.c = c;
+	this.d = d;*/
 
     this.gravityUpdater = new Updater();
     this.gravityUpdater.skipping = this.aiActive;
@@ -44,18 +53,18 @@ function GameManager(i){
         }
     }
     this.resetButton.onclick = function(){
-        self.setup();
+        self.setup(a,b,c,d);
     }
 
-    this.setup();
+    this.setup(a,b,c,d);
     this.startAI();
     this.gravityUpdater.checkUpdate(Date.now());
 };
 
-GameManager.prototype.setup = function(){
+GameManager.prototype.setup = function(a,b,c,d){
     this.grid = new Grid(22, 10);
-    this.rpg = new RandomPieceGenerator();
-    this.ai = new AI(0.510066, 0.760666, 0.35663, 0.184483)//height, line, holes, bumpiness(0.510066, 0.760666, 0.35663, 0.184483);
+    this.rpg = new RandomPieceGenerator(2);
+    this.ai = new AI(a,b,c,d)//height, line, holes, bumpiness(0.510066, 0.760666, 0.35663, 0.184483);
     this.workingPieces = [this.rpg.nextPiece(), this.rpg.nextPiece()];
     this.workingPiece = this.workingPieces[0];
 

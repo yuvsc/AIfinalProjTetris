@@ -23,20 +23,21 @@ hr
 
 .container
 {
-    width:350px;
-    margin: 0 auto;
+    /*width:350px;*/
+    /*margin: 0 auto;*/
 }
 
 .header
 {
-    text-align: center;
+   text-align: center;
     font-family: Verdana;
     color:#0000FF;
 }
 
 .game-container
 {
-    height:400px;
+	float:left;
+    height:400px;/*400*/
     margin-top:10px;
 }
 
@@ -54,7 +55,7 @@ hr
 
 .controls-container
 {
-    width:130px;
+    width:68px;
     float:right;
     height:100%;
 }
@@ -68,7 +69,7 @@ hr
     font-size:25px;
     border:1px solid #CCCCCC;
     font-weight: bold;
-    padding:5px;
+    /*padding:5px;*/
 }
 
 .score-container::before
@@ -90,13 +91,23 @@ hr
     font-size:25px;
     border:1px solid #CCCCCC;
     font-weight: bold;
-    padding:5px;
+    /*padding:5px;*/
     margin-top: 10px;
 }
 
 .next-container::before
 {
     content: "Next Piece";
+    width:100%;
+    float:right;
+    color: #BBBBBB;
+    font-size:15px;
+    font-weight: normal;
+}
+
+.next-number::before
+{
+    content: "Numbers:";
     width:100%;
     float:right;
     color: #BBBBBB;
@@ -126,11 +137,11 @@ hr
     display:inline-block;
     color:#666666;
     font-family:Arial;
-    font-size:15px;
+    font-size:12px;
     font-weight:bold;
     font-style:normal;
-    height:40px;
-    line-height:40px;
+    height:20px;
+    line-height:20px;
     width:100%;
     text-decoration:none;
     text-align:center;
@@ -165,5 +176,5 @@ hr
     vertical-align: top;
 }
 .fb_iframe_widget span {
-    vertical-align: text-top !important;
+	vertical-align: text-top !important;
 }

@@ -4,34 +4,54 @@
     <meta charset="UTF-8">
     <title>Tetris AI</title>
     <link href="style/main.css" rel="stylesheet" type="text/css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="fb-root"></div>
-<div class="container">
-    <h1 class="header">Tetris AI</h1>
+<script>
+	function another(number){
+		var rownum = number/5;
+		var first = 1;
+		for(var n = 0; n<rownum; n++){
+			var $e = $("<div class='row'>");
+			$(".here").append($e);
+			if(first==1){
+				var $e = $("<div class='col-md-2 col-md-offset-1'><div class='game-container'><canvas width='200px' height='400px' id='grid-canvas1' class='grid'></canvas>	<div class='controls-container'><div id='score-container1' class='score-container'>0</div><div id='next-container' class='next-container'><canvas id='next-canvas1' class='next-canvas' width='80px' height='80px'></canvas></div><div id='next-number1' class='next-number'></div><a id='ai-button' class='start-ai-button'>Run AI</a><a id='reset-button' class='reset-button'>Reset</a></div></div></div>");
+				$(".here").append($e);
+			} else {
+				var $e = $("<div class='col-md-2 col-md-offset-1'><div class='game-container'><canvas width='200px' height='400px' id='grid-canvas"+(n*5+1)+"' class='grid'></canvas><div class='controls-container'><div id='score-container"+(n*5+1)+"' class='score-container'>0</div><div id='next-container' class='next-container'><canvas id='next-canvas"+(n*5+1)+"' class='next-canvas' width='80px' height='80px'></canvas></div><div id='next-number"+(n*5+1)+"' class='next-number'></div></div></div></div>");
+				$(".here").append($e);
+			}
+			for (var i =2; i<=5; i++){
+				var $e = $("<div class='col-md-2'><div class='game-container'><canvas width='200px' height='400px' id='grid-canvas"+(n*5+i)+"' class='grid'></canvas><div class='controls-container'><div id='score-container"+(n*5+i)+"' class='score-container'>0</div><div id='next-container' class='next-container'><canvas id='next-canvas"+(n*5+i)+"' class='next-canvas' width='80px' height='80px'></canvas></div><div id='next-number"+(n*5+i)+"' class='next-number'></div></div></div></div>");
+				$(".here").append($e);
+			}
+			var $e = $("</div>");
+			$(".here").append($e);
+			first=0;
+		}
+	}
 
-    <div class="game-container">
-        <canvas width="200px" height="400px" id="grid-canvas1" class="grid"></canvas>
-        <div class="controls-container">
-            <div id="score-container1" class="score-container">0</div>
-            <div id="next-container" class="next-container">
-                <canvas id="next-canvas1" class="next-canvas" width="80px" height="80px"></canvas>
-            </div>
-            <a id="ai-button" class="start-ai-button">Run AI</a>
-            <a id="reset-button" class="reset-button">Reset</a>
-        </div>
-    </div>
-	<div class="game-container">
-        <canvas width="200px" height="400px" id="grid-canvas2" class="grid"></canvas>
-        <div class="controls-container">
-            <div id="score-container2" class="score-container">0</div>
-            <div id="next-container" class="next-container">
-                <canvas id="next-canvas2" class="next-canvas" width="80px" height="80px"></canvas>
-            </div>
-        </div>
-    </div>
+</script>
+
+<div id="fb-root"></div>
+<!--<div class="container">-->
+    <h1 class="header">Tetris AI - Yuval and Michael CECS 545 Final Project</h1>
+	
+	<div class="here"></div>
+	<script>
+		var population_size = 10;
+		another(population_size)//increments of 5</script>
+		
+	<div class="row"></div>
     <hr>
-</div>
+<!--</div>-->
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <script src="js/grid.js"></script>
 <script src="js/piece.js"></script>
@@ -39,12 +59,12 @@
 <script src="js/random_piece_generator.js"></script>
 <script src="js/ai.js"></script>
 <script src="js/updater.js"></script>
+<script src="js/population.js"></script>
 
 <script>
-    var manager = new GameManager(1);
-    manager.actuate(manager.grid, manager.workingPiece);
-	var manager2 = new GameManager(2);
-    manager2.actuate(manager2.grid, manager2.workingPiece);
+    var population = new population(population_size); //CHANGE NUMBER IN POPULATION FOR MORE OR LESS SAME IN ANOTHER UP THERE ^^^
+	/*var manager = new GameManager(1);
+    manager.actuate(manager.grid, manager.workingPiece);*/
 </script>
 <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];

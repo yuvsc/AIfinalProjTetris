@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Tetris AI</title>
+    <link href="style/main.css" rel="stylesheet" type="text/css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="fb-root"></div>
+<!--<div class="container">-->
+    <h1 class="header">Tetris AI</h1>
+
+    <div class="row">
+	<div class="col-md-2 col-md-offset-1">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas1" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container1" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas1" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<a id="ai-button" class="start-ai-button">Run AI</a>
+				<a id="reset-button" class="reset-button">Reset</a>
+				<div id="next-number1" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas2" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container2" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas2" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number2" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+        <canvas width="200px" height="400px" id="grid-canvas3" class="grid"></canvas>
+        <div class="controls-container">
+            <div id="score-container3" class="score-container">0</div>
+            <div id="next-container" class="next-container">
+                <canvas id="next-canvas3" class="next-canvas" width="80px" height="80px"></canvas>
+            </div>
+			<div id="next-number3" class="next-number"><!--to show random numbers-->
+			</div>
+        </div>
+		</div>
+    </div>
+	<div class="col-md-2">
+	
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas4" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container4" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas4" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number4" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas5" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container5" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas5" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number5" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</div> <!--end of row-->
+	
+	<div class="row">
+	
+	<div class="col-md-2 col-md-offset-1">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas6" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container6" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas6" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number6" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas7" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container7" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas7" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number7" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas8" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container8" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas8" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number8" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas9" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container9" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas9" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number9" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="game-container">
+			<canvas width="200px" height="400px" id="grid-canvas10" class="grid"></canvas>
+			<div class="controls-container">
+				<div id="score-container10" class="score-container">0</div>
+				<div id="next-container" class="next-container">
+					<canvas id="next-canvas10" class="next-canvas" width="80px" height="80px"></canvas>
+				</div>
+				<div id="next-number10" class="next-number"><!--to show random numbers-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</div> <!--end of row 2-->
+    <hr>
+<!--</div>-->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script src="js/grid.js"></script>
+<script src="js/piece.js"></script>
+<script src="js/game_manager.js"></script>
+<script src="js/random_piece_generator.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/updater.js"></script>
+<script src="js/population.js"></script>
+
+<script>
+    var population = new population;
+	/*var manager = new GameManager(1);
+    manager.actuate(manager.grid, manager.workingPiece);*/
+</script>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=142725279075499&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+</body>
+</html>
