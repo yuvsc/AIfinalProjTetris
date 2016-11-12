@@ -2,8 +2,8 @@ var a,b,c,d;
 var bestGame = []; // this will contain a,b,c,d, score: {lines cleared, holes, index through the bag of pieces}
 games = [];
 var n;
-TotalGenerations = 3;
-NumberOfPieces = 71;
+TotalGenerations = 10;
+NumberOfPieces = 11;
 GenerationsLeft = TotalGenerations;
 var A = [];
 
