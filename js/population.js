@@ -3,13 +3,14 @@ var bestGame = []; // this will contain a,b,c,d, score: {lines cleared, holes, i
 games = [];
 var n;
 TotalGenerations = 10;
-NumberOfPieces = 11;
+NumberOfPieces = 101;
 GenerationsLeft = TotalGenerations;
 var A = [];
 
 
 function population(x){ // n is the number in population (can be changed in index.html
 	n = x;
+	newBag();
 	//this.generations = 1;
 	//generations = this.generations;
 	//this.games = []; // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
@@ -26,7 +27,7 @@ function population(x){ // n is the number in population (can be changed in inde
 };
 function makeGeneration(generations_left,n){
 	if(generations_left>0){
-		newBag(); // generate a new list of pieces
+		//newBag(); // generate a new list of pieces
 		console.log("here are the pieces (in population.js): "+bag); //for testing
 		for(var i = 0; i<n; i++){
 			if(TotalGenerations==generations_left){generateNewRandoms();}// in the first generation, a b c and d are random
@@ -113,7 +114,7 @@ function checkAgain(){
 		//display fittest individual before continuing
 		this.bestgame=document.getElementById('best-game');
 		//var data = '{a = '+fit1[0].toFixed(4) +' b = '+fit1[1].toFixed(4)+' c = '+fit1[2].toFixed(4)+' d = '+fit1[3].toFixed(4)+'}';
-		this.bestgame.innerHTML = 'Completed Lines: '+bestGame[0]+'\nHeight: '+bestGame[1]+'\nHoles: '+bestGame[2]+'\nValues: {a = '+bestGame[3][0].toFixed(4) +' b = '+bestGame[3][1].toFixed(4)+' c = '+bestGame[3][2].toFixed(4)+' d = '+bestGame[3][3].toFixed(4)+'}';
+		this.bestgame.innerHTML = '<p style="text-align: center; font-size: 25px">Generation number: '+(TotalGenerations-GenerationsLeft+1)+'<br />Completed Lines: '+bestGame[0]+'<br />Height: '+bestGame[1]+'; Holes: '+bestGame[2]+'<br />Values: {a = '+bestGame[3][0].toFixed(4) +' b = '+bestGame[3][1].toFixed(4)+' c = '+bestGame[3][2].toFixed(4)+' d = '+bestGame[3][3].toFixed(4)+'}</p>';
 		
 		games = [];
 		crossover(gameScores[0][3],gameScores[1][3]);
@@ -177,11 +178,14 @@ function mutation(index){
 	for(i in A[index]){ // go through all a,b,c,d in A[index]
 		if(Math.floor(Math.random() * 5) + 1 == 1){ //25% change of mutation (if == 1 then mutate)
 			Math.seed;
-			//console.log("passed mutation 2");
-			y = Math.random() * -0.1;
-			if(A[index][i] + y >= 0){// make sure not negative
-				A[index][i] += y; // generate value between -1 and 1
-			}			
+			if(Math.floor(Math.random() * 5) + 1 == 3){
+				A[index] = [Math.random() * 1,Math.random() * 1,Math.random() * 1,Math.random() * 1];
+			} else {
+				y = Math.random() * -0.1;
+				if(A[index][i] + y >= 0){// make sure not negative
+					A[index][i] += y; // generate value between -1 and 1
+				}
+			}				
 		}
 	}
 };
