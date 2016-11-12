@@ -110,6 +110,11 @@ function checkAgain(){
 			console.log("NEW BEST GAME");
 		}
 		
+		//display fittest individual before continuing
+		this.bestgame=document.getElementById('best-game');
+		//var data = '{a = '+fit1[0].toFixed(4) +' b = '+fit1[1].toFixed(4)+' c = '+fit1[2].toFixed(4)+' d = '+fit1[3].toFixed(4)+'}';
+		this.bestgame.innerHTML = 'Completed Lines: '+bestGame[0]+'\nHeight: '+bestGame[1]+'\nHoles: '+bestGame[2]+'\nValues: {a = '+bestGame[3][0].toFixed(4) +' b = '+bestGame[3][1].toFixed(4)+' c = '+bestGame[3][2].toFixed(4)+' d = '+bestGame[3][3].toFixed(4)+'}';
+		
 		games = [];
 		crossover(gameScores[0][3],gameScores[1][3]);
 		GenerationsLeft--;
@@ -154,13 +159,8 @@ function crossover(fit1, fit2){
 			child[z] = parents[1][z];
 		}
 		A.push(child);
-<<<<<<< HEAD
-	}	
-	console.log("Before mutations: "+A);
-=======
 	}
 	//console.log("Before mutations: "+A);
->>>>>>> f45670b3db2b5ea67bce164b84450f78092db18d
 	//mutation
 	for (i in A){
 		//if 20% changed
