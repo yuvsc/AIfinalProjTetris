@@ -1,11 +1,15 @@
 var a,b,c,d;
 var bestGame = []; // this will contain a,b,c,d, score: {lines cleared, holes, index through the bag of pieces}
+games = []
+var n, generations;
 
-function population(n){ // n is the number in population (can be changed in index.html
-	var generations = 1;
-	games = [] // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
-//	this.makeGeneration(this.generations,n);
-	for(var current_generation = 0; current_generation<generations; current_generation++){
+function population(x){ // n is the number in population (can be changed in index.html
+	n = x;
+	this.generations = 1;
+	generations = this.generations;
+	this.games = []; // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
+	games = makeGeneration(this.generations,n,this.games);
+	/*for(var current_generation = 0; current_generation<generations; current_generation++){
 		newBag(); // generate a new list of pieces
 		console.log("here are the pieces (in population.js): "+bag); //for testing
 		for(var i = 0; i<n; i++){
@@ -17,7 +21,7 @@ function population(n){ // n is the number in population (can be changed in inde
 			manager.actuate(manager.grid, manager.workingPiece);
 			games.push(manager);
 		}
-	}
+	}*/
 	//setTimeout(function ah(){if(games[0].isRunning == true){console.log("in the loop");setTimeout(ah, 9000);}}, 9000);
 	//setTimeout(checkAgain, 1000);
 	checkAgain();
@@ -31,7 +35,7 @@ function population(n){ // n is the number in population (can be changed in inde
 	
 	console.log("end of population");
 };
-population.prototype.makeGeneration = function(generations_left,n){
+function makeGeneration(generations_left,n,games){
 	newBag(); // generate a new list of pieces
 	console.log("here are the pieces (in population.js): "+bag); //for testing
 	for(var i = 0; i<n; i++){
@@ -39,22 +43,18 @@ population.prototype.makeGeneration = function(generations_left,n){
 		else{
 			console.log("in else");//mutate and crossover results
 		}
-		console.log("making them rain");
 		var manager = new GameManager(i+1,a,b,c,d,bag);
 		manager.actuate(manager.grid, manager.workingPiece);
-		this.games.push(manager);
+		games.push(manager);
 	}
+	return games;
 };
 function generateNewRandoms(){
 	Math.seed;
-	/*a = 0;
-	b = 0;
-	c = 0;
-	d = 0;*/
-	a= 0.4203 ;
+	/*a= 0.4203 ;
 	b = 0.7097 ;
 	c = 0.8591 ;
-	d = 0.8667;
+	d = 0.8667;*/
 	//generate random numbers between 0 and 1
 	a = Math.random() * 1;
 	b = Math.random() * 1;
@@ -71,8 +71,10 @@ function newBag(){
 };
 function checkAgain(){
 	var allGamesDone = true;
-	for(game in this.games){
-		if(this.games[game].isRunning == true){
+	//console.log("in check again "+games)
+	for(game in games){
+		console.log("is it running? "+games[game].isRunning)
+		if(games[game].isRunning == true){
 			allGamesDone = false;
 			break; // a game is still running so break out of the loop and check again in a second
 		}
@@ -84,14 +86,29 @@ function checkAgain(){
 	} else {
 		console.log("out of loop scores:");
 		var gameScores = []
-		for(game in this.games){
-			gameScores.push(this.games[game].getFinalScore());
-			console.log(this.games[game].getFinalScore()); // all game scores
+		for(game in games){
+			gameScores.push(games[game].getFinalScore());
+			console.log(games[game].getFinalScore()); // all game scores
 		}
 		console.log(gameScores);
-	//	console.log("highest score: "+Math.max.apply( Math, gameScores));
-	//sort the array
-		gameScores.sort(function(a, b) {
+		//	console.log("highest score: "+Math.max.apply( Math, gameScores));
+		gameScores = sortArr(gameScores);//sort the array
+		
+		// print sorted array for testing
+		for(i in gameScores){
+			console.log("sorted all: "+gameScores[i]);
+		}
+		// change here
+		games = []
+		//generations--;
+		
+		games = makeGeneration(generations,n,games);
+		checkAgain();
+	}
+	//crossover + mutate
+};
+function sortArr(gameScores){
+	gameScores.sort(function(a, b) {
 			return (b[0]) - (a[0]);//complete lines
 		});
 		gameScores.sort(function(a, b) {
@@ -108,11 +125,5 @@ function checkAgain(){
 				return 0;
 			}
 		});
-		// print sorted array for testing
-		for(i in gameScores){
-			console.log("sorted all: "+gameScores[i]);
-		}
-	
-	}
-	//crossover + mutate
+	return gameScores;
 };
