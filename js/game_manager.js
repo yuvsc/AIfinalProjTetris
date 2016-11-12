@@ -6,6 +6,9 @@ function GameManager(i, a, b, c, d,pieces_list){//number, height, line, holes, b
     this.aiButton = document.getElementById('ai-button');
 	
 	this.finalScore = 0;
+	this.finalIndex = 0;
+	this.finalHeight = 0;
+	this.finalHoles = 0;
 	this.i = i;
 	
 	this.isRunning = true;
@@ -145,13 +148,44 @@ GameManager.prototype.setWorkingPiece = function(){
             this.aiMove();
             this.gravityUpdater.skipping = true;
         }
-    }else{
-		finalScore = this.score;
-		console.log("final score for "+this.i+" is "+finalScore);
+    }else{ // when game is over
+		this.finalIndex = this.rpg.index; // pieces gone through
+		this.finalScore = this.score; // completed lines
+		console.log("final score for "+this.i+" is "+this.finalScore);
+		//change isRunning to false
 		this.isRunning = false;
-        alert("Game Over!");
+		
+		this.actuate();//draw one more time
+		
+		//height
+	    var grid_clone = this.grid.clone(); // 2 cells above (0 starts from very top) .cells[row][column]
+		for(var findIt_index = 0; findIt_index < grid_clone.rows; findIt_index++){
+			for(var c = 0; c<grid_clone.columns; c++){
+				if(grid_clone.cells[findIt_index][c] == 1){//find the first 1
+					this.finalHeight = 22 - findIt_index;
+					break;
+				}
+			}
+			if(this.finalHeight != 0){break;}
+		}
+		console.log("Final Height: "+this.finalHeight);
+		
+		//holes
+		this.finalHoles = grid_clone.holes();
+		console.log("Final Hole Count: "+ this.finalHoles);
+		
+        //alert("Game Over!");
 		throw new Error("game is over");
     }
+};
+
+GameManager.prototype.getFinalScore = function(){
+	var results = []
+	results.push(this.finalScore); // completed lines
+	results.push(this.finalHeight); // height
+	results.push(this.finalHoles); // holes
+	//results.push(this.finalIndex);// pieces gone through
+	return results
 };
 
 GameManager.prototype.applyGravity = function(){
