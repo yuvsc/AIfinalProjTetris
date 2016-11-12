@@ -4,6 +4,7 @@ games = [];
 var n, generations;
 var A = [];
 
+
 function population(x){ // n is the number in population (can be changed in index.html
 	n = x;
 	this.generations = 1;
@@ -136,7 +137,7 @@ function crossover(fit1, fit2){
 			child[z] = parents[1][z];
 		}
 		A.push(child);
-	}
+	}	
 	console.log("Before mutations: "+A);
 	//mutation
 	for (i in A){
