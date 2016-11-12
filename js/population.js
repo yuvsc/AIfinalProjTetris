@@ -1,30 +1,15 @@
 var a,b,c,d;
 var bestGame = []; // this will contain a,b,c,d, score: {lines cleared, holes, index through the bag of pieces}
-games = []
+games = [];
 var n, generations;
+var A = [];
 
 function population(x){ // n is the number in population (can be changed in index.html
 	n = x;
 	this.generations = 1;
 	generations = this.generations;
-	this.games = []; // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
-	games = makeGeneration(this.generations,n,this.games);
-	/*for(var current_generation = 0; current_generation<generations; current_generation++){
-		newBag(); // generate a new list of pieces
-		console.log("here are the pieces (in population.js): "+bag); //for testing
-		for(var i = 0; i<n; i++){
-			if(current_generation==0){generateNewRandoms();}// in the first generation, a b c and d are random
-			else{
-				//mutate and crossover results
-			}
-			var manager = new GameManager(i+1,a,b,c,d,bag);
-			manager.actuate(manager.grid, manager.workingPiece);
-			games.push(manager);
-		}
-	}*/
-	//setTimeout(function ah(){if(games[0].isRunning == true){console.log("in the loop");setTimeout(ah, 9000);}}, 9000);
-	//setTimeout(checkAgain, 1000);
-	checkAgain();
+	//this.games = []; // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
+	makeGeneration(this.generations,n);
 	
 	// now from completed lines, holes, height, don't need pieces gone through,
 	// completed: (getFinalScore): completed lines, height, holes
@@ -35,19 +20,21 @@ function population(x){ // n is the number in population (can be changed in inde
 	
 	console.log("end of population");
 };
-function makeGeneration(generations_left,n,games){
+function makeGeneration(generations_left,n){
 	newBag(); // generate a new list of pieces
 	console.log("here are the pieces (in population.js): "+bag); //for testing
 	for(var i = 0; i<n; i++){
 		if(this.generations==generations_left){generateNewRandoms();}// in the first generation, a b c and d are random
 		else{
+			setNewABCD(i); // sets the new abcd values according to A
 			console.log("in else");//mutate and crossover results
 		}
 		var manager = new GameManager(i+1,a,b,c,d,bag);
 		manager.actuate(manager.grid, manager.workingPiece);
 		games.push(manager);
 	}
-	return games;
+	console.log("NEW GENERATION MADE");
+	setTimeout(checkAgain, 5000); // wait 5 seconds
 };
 function generateNewRandoms(){
 	Math.seed;
@@ -61,8 +48,14 @@ function generateNewRandoms(){
 	c = Math.random() * 1;
 	d= Math.random() * 1;
 };
+function setNewABCD(i){
+	a = A[i][0];
+	b = A[i][1];
+	c = A[i][2];
+	d = A[i][3];
+}
 function newBag(){
-	bag = [] // bag of pieces
+	bag = []; // bag of pieces
 	Math.seed;
 	bag = [6,2,6,5,4,2,5,2,0,0,6,3,6,5,6,6,4,4,1,1,3];
 	/*for(var i = 0; i<21; i++){//last piece will not be used
@@ -73,7 +66,6 @@ function checkAgain(){
 	var allGamesDone = true;
 	//console.log("in check again "+games)
 	for(game in games){
-		console.log("is it running? "+games[game].isRunning)
 		if(games[game].isRunning == true){
 			allGamesDone = false;
 			break; // a game is still running so break out of the loop and check again in a second
@@ -95,18 +87,21 @@ function checkAgain(){
 		gameScores = sortArr(gameScores);//sort the array
 		
 		// print sorted array for testing
-		for(i in gameScores){
+		/*for(i in gameScores){
 			console.log("sorted all: "+gameScores[i]);
-		}
+		}*/
 		// change here
-		games = []
-		//generations--;
+		bestGame = gameScores[0];//a b c d values of best game
+		games = [];
+		generations--;
+		crossover(gameScores[0][3],gameScores[1][3]);
 		
-		games = makeGeneration(generations,n,games);
-		checkAgain();
+		makeGeneration(generations,n);
+		//checkAgain();
 	}
 	//crossover + mutate
 };
+//sort the array according to max(completed lines),min(height),min(holes)
 function sortArr(gameScores){
 	gameScores.sort(function(a, b) {
 			return (b[0]) - (a[0]);//complete lines
@@ -126,4 +121,44 @@ function sortArr(gameScores){
 			}
 		});
 	return gameScores;
+};
+function crossover(fit1, fit2){
+	var parents = [fit1, fit2];
+	//do crossover
+	for (j = 0; j < 10; j++){
+		var child = [];		
+		Math.seed;
+		var x = Math.floor(Math.random() * 4) + 0;//from values zero to 3
+		for (z = x; z < 4; z++){
+			child[z] = parents[0][z];
+		}
+		for(z = 0; z < x; z++){
+			child[z] = parents[1][z];
+		}
+		A.push(child);
+	}
+	console.log("Before mutations: "+A);
+	//mutation
+	for (i in A){
+		//if 20% changed
+		var x = Math.floor(Math.random() * 2) + 0;
+		if(x == 0){
+			console.log("passed mutation 1");
+			mutation(i);
+		}
+	}
+	console.log("After mutations: "+A);
+};
+function mutation(index){
+	Math.seed;
+	for(i in A[index]){ // go through all a,b,c,d in A[index]
+		if(Math.floor(Math.random() * 5) + 1 == 1){ //25% change of mutation (if == 1 then mutate)
+			Math.seed;
+			console.log("passed mutation 2");
+			y = Math.random() * -0.1;
+			if(A[index][i] + y >= 0){// make sure not negative
+				A[index][i] += y; // generate value between -1 and 1
+			}			
+		}
+	}
 };

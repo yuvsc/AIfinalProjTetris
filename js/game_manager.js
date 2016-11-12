@@ -11,6 +11,11 @@ function GameManager(i, a, b, c, d,pieces_list){//number, height, line, holes, b
 	this.finalHoles = 0;
 	this.i = i;
 	
+	this.A = a;
+	this.B = b;
+	this.C = c;
+	this.D = d;
+	
 	this.isRunning = true;
 	
 	this.bag = pieces_list;
@@ -184,7 +189,17 @@ GameManager.prototype.getFinalScore = function(){
 	results.push(this.finalScore); // completed lines
 	results.push(this.finalHeight); // height
 	results.push(this.finalHoles); // holes
+	results.push(this.getABCD());
 	//results.push(this.finalIndex);// pieces gone through
+	return results
+};
+
+GameManager.prototype.getABCD = function(){
+	var results = []
+	results.push(this.A); // Aggregate Height Weight
+	results.push(this.B); // Completed Lines Weight
+	results.push(this.C); // Holes Weight
+	results.push(this.D); // Bumpiness Weight
 	return results
 };
 
