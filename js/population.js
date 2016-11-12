@@ -7,6 +7,7 @@ NumberOfPieces = 11;
 GenerationsLeft = TotalGenerations;
 var A = [];
 
+
 function population(x){ // n is the number in population (can be changed in index.html
 	n = x;
 	//this.generations = 1;
@@ -108,6 +109,11 @@ function checkAgain(){
 			bestGame = isItBest[0]; // take the one at the top as total best game
 			console.log("NEW BEST GAME");
 		}
+		
+		//display fittest individual before continuing
+		this.bestgame=document.getElementById('best-game');
+		//var data = '{a = '+fit1[0].toFixed(4) +' b = '+fit1[1].toFixed(4)+' c = '+fit1[2].toFixed(4)+' d = '+fit1[3].toFixed(4)+'}';
+		this.bestgame.innerHTML = 'Completed Lines: '+bestGame[0]+'\nHeight: '+bestGame[1]+'\nHoles: '+bestGame[2]+'\nValues: {a = '+bestGame[3][0].toFixed(4) +' b = '+bestGame[3][1].toFixed(4)+' c = '+bestGame[3][2].toFixed(4)+' d = '+bestGame[3][3].toFixed(4)+'}';
 		
 		games = [];
 		crossover(gameScores[0][3],gameScores[1][3]);
