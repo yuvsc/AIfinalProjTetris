@@ -2,19 +2,24 @@ var a,b,c,d;
 var bestGame = []; // this will contain a,b,c,d, score: {lines cleared, holes, index through the bag of pieces}
 games = [];
 var n;
-TotalGenerations = 10;
-NumberOfPieces = 101;
+// variables that can be changed:------------
+TotalGenerations = 20;				//-------
+NumberOfPieces = 11;				//-------
+WOC = false;						//-------
+// end of variables to change-----------------
 GenerationsLeft = TotalGenerations;
-var A = [];
-
+var A = []; // abcd values of each game
+var WOCA = []; // 
+var WOCbag = 0;
 
 function population(x){ // n is the number in population (can be changed in index.html
 	n = x;
-	newBag();
-	//this.generations = 1;
-	//generations = this.generations;
-	//this.games = []; // includes {game manager... to get lines cleared, holes, index through pieces} -> then get the best of them and say bestGame = to that
-	makeGeneration(TotalGenerations,n);
+	if(WOC == false){
+		newBag();
+		makeGeneration(TotalGenerations,n);
+	} else { // when WOC is true
+		makeWOCGen(TotalGenerations,n);
+	}
 	
 	// now from completed lines, holes, height, don't need pieces gone through,
 	// completed: (getFinalScore): completed lines, height, holes
@@ -23,7 +28,30 @@ function population(x){ // n is the number in population (can be changed in inde
 	// lines ; height ; holes
 	// wisdom of crowds: keep a 2 d array with the 4 lists (a,b,c,d) and in there numbers with how many times they occurred. Choose the ones which have occurred most frequently 
 	
+	//WOC: keep array of game[0]
+	
 	console.log("end of population");
+};
+function makeWOCGen(gen_left,n){
+	if(gen_left > 0){
+		if(gen_left%5 == 0){
+				newBag();//every 5 generations generate a new bag - after 2 bags (10 generations) do WOC where you average
+				WOCbag++;
+		} 
+		for(var i=0; i<n; i++){ //for every game
+			if(TotalGenerations == gen_left){generateNewRandoms();
+			} else {
+				setNewABCD(i);//set new ABCD according to A for every game, i
+			}
+			var manager = new GameManager(i+1,a,b,c,d,bag);
+			manager.actuate(manager.grid, manager.workingPiece);
+			games.push(manager);
+		}
+		console.log("NEW GENERATION MADE - WOC");
+		//WOCA.push(A[0]);// add to WOCA the first abcd of A doing this in checkAgain
+		A = []; // Clear A
+		setTimeout(checkAgain, 5000); // wait 5 seconds
+	}
 };
 function makeGeneration(generations_left,n){
 	if(generations_left>0){
@@ -55,6 +83,10 @@ function generateNewRandoms(){
 	b = Math.random() * 1;
 	c = Math.random() * 1;
 	d= Math.random() * 1;
+	/*a = 1;
+	b = 1;
+	c = 1;
+	d = 1;*/
 };
 function setNewABCD(i){
 	//console.log("setting new ABCDs");
@@ -84,15 +116,14 @@ function checkAgain(){
 	if(allGamesDone == false){
 		console.log("in the loop");
 		setTimeout(checkAgain, 1000);
-	} else {
+	} else { // out of settimeout loop
 		console.log("out of loop scores:");
 		var gameScores = []
 		for(game in games){
 			gameScores.push(games[game].getFinalScore());
 			console.log(games[game].getFinalScore()); // all game scores
 		}
-	//	console.log(gameScores);
-		//	console.log("highest score: "+Math.max.apply( Math, gameScores));
+	
 		gameScores = sortArr(gameScores);//sort the array
 		
 		// print sorted array for testing
@@ -119,11 +150,60 @@ function checkAgain(){
 		games = [];
 		crossover(gameScores[0][3],gameScores[1][3]);
 		GenerationsLeft--;
+		// for woc
+		if(WOC){
+			WOCA.push(A[0]);
+			if((WOCbag-1)%2 == 0 && WOCbag-1!=0){// if we are doing WOC and it has been through 2 bags
+				console.log("This is WOCA");
+				console.log(WOCA);
+				parents = averageThem(WOCA);
+				WOCA = [];
+				crossover(parents,gameScores[0][3]);
+			//	generateNewRandoms();//for new bag
+			}
+			makeWOCGen(GenerationsLeft,n);
+		} else {
+			makeGeneration(GenerationsLeft,n);
+		}
 		
-		makeGeneration(GenerationsLeft,n);
 		//checkAgain();
-	}
+	} // end else
 	//crossover + mutate
+};
+function averageThem(arr){ // averaging WOCA	
+	var suma = 0, sumb = 0, sumc = 0, sumd = 0;
+	
+	for(item = 0; item<arr.length; item++){
+		suma += arr[item][0];
+		sumb += arr[item][1];
+		sumc += arr[item][2];
+		sumd += arr[item][3];
+	}
+	var avga = suma/arr.length;
+	var avgb = sumb/arr.length;
+	var avgc = sumc/arr.length;
+	var avgd = sumd/arr.length;
+	
+	var returnme = [avga,avgb,avgc,avgd];
+	return returnme; // for now just do averages of all 10 games
+	
+	/*//second bag
+	var suma = 0, sumb = 0, sumc = 0, sumd = 0;
+	
+	for(item = 0; item<arr.length; item++){
+		suma += arr[item][0];
+		sumb += arr[item][1];
+		sumc += arr[item][2];
+		sumd += arr[item][3];
+	}
+	var avga = suma/arr.length;
+	var avgb = sumb/arr.length;
+	var avgc = sumc/arr.length;
+	var avgd = sumd/arr.length;
+	
+	var returnme[1] = [avga,avgb,avgc,avgd];
+	*/
+	
 };
 //sort the array according to max(completed lines),min(height),min(holes)
 function sortArr(gameScores){
@@ -151,13 +231,11 @@ function crossover(fit1, fit2){
 	//do crossover
 	for (j = 0; j < 10; j++){
 		var child = [];		
-		Math.seed;
-		var x = Math.floor(Math.random() * 4) + 0;//from values zero to 3
-		for (z = x; z < 4; z++){
-			child[z] = parents[0][z];
-		}
-		for(z = 0; z < x; z++){
-			child[z] = parents[1][z];
+		//var x = Math.floor(Math.random() * 4) + 0;//from values zero to 3
+		for(var z = 0; z<4; z++){
+			Math.seed;
+			var x = Math.floor(Math.random() * 2) + 0;//from values 0 and 1
+			child[z] = parents[x][z];
 		}
 		A.push(child);
 	}
@@ -178,11 +256,11 @@ function mutation(index){
 	for(i in A[index]){ // go through all a,b,c,d in A[index]
 		if(Math.floor(Math.random() * 5) + 1 == 1){ //25% change of mutation (if == 1 then mutate)
 			Math.seed;
-			if(Math.floor(Math.random() * 5) + 1 == 3){
+			if(Math.floor(Math.random() * 8) + 1 == 3){ // random chance of all new randoms
 				A[index] = [Math.random() * 1,Math.random() * 1,Math.random() * 1,Math.random() * 1];
 			} else {
-				y = Math.random() * -0.1;
-				if(A[index][i] + y >= 0){// make sure not negative
+				y = ((Math.random() * 3) - 1) * 0.1 ;
+				if(A[index][i] + y >= 0 && A[index][i] + y <=1){// make sure not negative
 					A[index][i] += y; // generate value between -1 and 1
 				}
 			}				
