@@ -10,7 +10,23 @@ function Grid(rows, columns){
             this.cells[r][c] = 0;
         }
     }
+	this.populatePuzzle();
 };
+
+// Populate the initial board game state with a "puzzle"
+// The goal for the GA is to optimize the {a,b,c,d} values for the heuristic
+// in order to best "solve" the puzzle
+Grid.prototype.populatePuzzle = function(){
+	this.cells[16][0] = 1;
+	this.cells[13][1] = 1;this.cells[18][1] = 1;this.cells[19][1] = 1;
+	this.cells[12][2] = 1;this.cells[13][2] = 1;this.cells[14][2] = 1;this.cells[19][2] = 1;this.cells[20][2] = 1;
+	this.cells[13][3] = 1;this.cells[19][3] = 1;
+	this.cells[17][4] = 1;this.cells[18][4] = 1;this.cells[19][4] = 1;
+	this.cells[13][5] = 1;this.cells[14][5] = 1;this.cells[15][5] = 1;this.cells[18][5] = 1;this.cells[20][5] = 1;this.cells[21][5] = 1;
+	this.cells[16][6] = 1;this.cells[17][6] = 1;this.cells[18][6] = 1;
+	this.cells[14][7] = 1;this.cells[16][7] = 1;this.cells[19][7] = 1;this.cells[20][7] = 1;this.cells[21][7] = 1;
+	this.cells[19][8] = 1;
+}
 
 // Methods
 Grid.prototype.clone = function(){

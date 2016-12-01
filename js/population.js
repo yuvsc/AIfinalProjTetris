@@ -4,7 +4,7 @@ games = [];
 var n;
 // variables that can be changed:------------
 TotalGenerations = 20;				//-------
-NumberOfPieces = 11;				//-------
+NumberOfPieces = 141;				//-------
 WOC = false;						//-------
 // end of variables to change-----------------
 GenerationsLeft = TotalGenerations;
@@ -73,20 +73,16 @@ function makeGeneration(generations_left,n){
 	}
 };
 function generateNewRandoms(){
-	Math.seed;
 	/*a= 0.4203 ;
 	b = 0.7097 ;
 	c = 0.8591 ;
 	d = 0.8667;*/
 	//generate random numbers between 0 and 1
+	Math.seed;
 	a = Math.random() * 1;
 	b = Math.random() * 1;
 	c = Math.random() * 1;
-	d= Math.random() * 1;
-	/*a = 1;
-	b = 1;
-	c = 1;
-	d = 1;*/
+	d = Math.random() * 1;
 };
 function setNewABCD(i){
 	//console.log("setting new ABCDs");
@@ -96,12 +92,47 @@ function setNewABCD(i){
 	d = A[i][3];
 }
 function newBag(){
-	bag = []; // bag of pieces
-	Math.seed;
-	//bag = [6,2,6,5,4,2,5,2,0,0,6,3,6,5,6,6,4,4,1,1,3];
-	for(var i = 0; i<NumberOfPieces; i++){//last piece will not be used
-		bag.push(Math.floor(Math.random() * 7) + 0);//random number between 0-6
-	}
+	//bag = []; // bag of pieces
+	//Math.seed;
+	
+	//Sequence 1
+	/*bag = [6, 1, 5, 4, 3, 2, 0, 1, 0, 5, 4, 3, 6, 2, 
+			1, 4, 5, 2, 6, 0, 3, 1, 5, 2, 0, 6, 3, 4, 
+			4, 2, 6, 0, 1, 3, 5, 6, 3, 5, 2, 4, 0, 1, 
+			1, 6, 3, 0, 2, 5, 4, 0, 6, 1, 3, 5, 2, 4, 
+			3, 4, 2, 0, 1, 6, 5, 4, 5, 3, 1, 2, 0, 6, 
+			0, 6, 5, 4, 1, 3, 2, 5, 4, 0, 6, 2, 3, 1, 
+			3, 6, 4, 0, 2, 5, 1, 6, 2, 4, 3, 1, 5, 0, 
+			0, 6, 4, 2, 3, 5, 1, 0, 2, 4, 5, 3, 6, 1, 
+			5, 2, 0, 4, 6, 1, 3, 5, 4, 1, 0, 3, 6, 2, 
+			3, 1, 0, 5, 2, 4, 6, 5, 2, 3, 0, 6, 4, 1]*/
+		
+	//Sequence 2
+	/*bag = [3, 5, 2, 1, 6, 4, 0, 4, 1, 6, 3, 5, 0, 2, 
+			3, 1, 0, 5, 6, 4, 2, 4, 2, 3, 6, 5, 0, 1, 
+			1, 5, 3, 2, 0, 4, 6, 1, 4, 6, 3, 0, 2, 5, 
+			5, 0, 6, 2, 4, 3, 1, 3, 2, 6, 5, 0, 1, 4, 
+			1, 6, 3, 0, 4, 2, 5, 3, 2, 4, 5, 6, 0, 1, 
+			5, 0, 1, 4, 6, 2, 3, 2, 4, 5, 6, 0, 1, 3, 
+			1, 4, 2, 0, 6, 3, 5, 3, 4, 2, 6, 5, 1, 0, 
+			4, 2, 5, 6, 3, 0, 1, 2, 5, 1, 4, 0, 3, 6, 
+			2, 5, 3, 1, 0, 6, 4, 5, 0, 3, 1, 4, 2, 6, 
+			3, 5, 6, 4, 1, 0, 2, 1, 6, 4, 0, 2, 3, 5]*/
+		
+	//Sequence 3	
+	bag = [6, 3, 4, 5, 0, 2, 1, 2, 3, 6, 0, 1, 5, 4, 
+			0, 6, 5, 3, 2, 4, 1, 6, 0, 5, 1, 3, 4, 2, 
+			2, 4, 6, 5, 0, 3, 1, 0, 4, 3, 6, 2, 1, 5, 
+			1, 6, 4, 2, 3, 0, 5, 3, 5, 2, 6, 1, 0, 4, 
+			3, 5, 4, 2, 1, 0, 6, 6, 5, 1, 0, 4, 2, 3, 
+			2, 3, 5, 6, 1, 4, 0, 1, 2, 6, 0, 3, 5, 4, 
+			5, 1, 6, 3, 2, 0, 4, 5, 4, 1, 2, 3, 0, 6, 
+			6, 2, 0, 3, 1, 4, 5, 2, 6, 5, 4, 1, 0, 3, 
+			4, 5, 1, 0, 2, 3, 6, 4, 1, 3, 5, 6, 0, 2, 
+			4, 1, 5, 0, 2, 3, 6, 5, 6, 3, 0, 2, 4, 1]
+	// for(var i = 0; i<NumberOfPieces; i++){//last piece will not be used
+		// bag.push(Math.floor(Math.random() * 7) + 0);//random number between 0-6
+	// }
 };
 function checkAgain(){
 	var allGamesDone = true;
